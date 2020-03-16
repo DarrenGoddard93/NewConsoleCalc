@@ -9,12 +9,12 @@ namespace NewConsoleCalc
     class Program
     {
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             Introduction();
             Calculator calculator = new Calculator();
-            calculator.RunCalculation();
-           
+            calculator.RunCalculator();
+
         }
 
 
@@ -25,8 +25,9 @@ namespace NewConsoleCalc
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("Welcome to my version of a console calculator");
             Console.ReadLine();
-        }
 
+        }
 
     }
 }
+

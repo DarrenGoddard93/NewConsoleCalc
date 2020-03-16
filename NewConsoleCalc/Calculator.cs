@@ -8,241 +8,193 @@ namespace NewConsoleCalc
 {
     class Calculator
     {
-        //Used in Subtraction method as a different approach
-        int enternumber1;
-        int enternumber2;
+        int number1;
+        int number2;
         int answer;
 
-        //Used in the rest of the project
-        string enternumber3;
-        string enternumber4;
-        int answer1;
-        bool IsValid = true;
+        int optionNumber;
 
 
-        public void RunCalculation()
+        public void RunCalculator()
         {
-            Console.WriteLine("Please enter the number for the type of calculation would you like to do" + "\n");
+            AskCalculation();
+            ValidateType();
+            FirstNumberInput();
+            SecondNumberInput();
+            AnswerOutput();
+            RestartApplication();
+
+        }
+
+        public void AskCalculation()
+        {
+            Console.WriteLine("Please enter the number for the calculation you want to do ...");
             Console.Write("1. Addition \n" + "2. Subtraction \n" + "3. Multiplication \n" + "4. Division \n" + "\n \n" + "Enter number here:" + "\n \n");
 
-            try
-            {
-                //The input into the console is as text (string), as such need to Parse here to int value.
-                int number = int.Parse(Console.ReadLine());
-                if (number >= 1 && number <= 4)
-                {
+        }
 
-                    if (number == 1)
-                    {
-                        RunAddition();
-                        Console.ReadLine();
-                    }
-                    else if (number == 2)
-                    {
-                        RunSubtraction();
-                        Console.ReadLine();
-                    }
-                    else if (number == 3)
-                    {
-                        RunMultiply();
-                        Console.ReadLine();
-                    }
-                    else if (number == 4)
-                    {
-                        RunDivide();
-                        Console.ReadLine();
-                    }
+
+        public int GetInput()
+        {
+            while (int.TryParse(Console.ReadLine(), out int num))
+            {
+                return num;
+            }
+            {
+                Console.WriteLine("Not a valid entry \n Please enter a number ...");
+
+            }
+            return GetInput();
+        }
+
+
+        public int ValidateType()
+        {
+            bool IsValid = Int32.TryParse(Console.ReadLine(), out optionNumber);
+            {
+                while (!IsValid)
+                {
+                    Console.WriteLine("Invalid Entry, please enter a number ...");
+                    IsValid = Int32.TryParse(Console.ReadLine(), out optionNumber);
+                }
+
+                if (optionNumber >= 1 && optionNumber <= 4)
+                {
+                    return optionNumber;
                 }
                 else
                 {
-                    Console.WriteLine("Error, Please enter a number between 1 - 4");
-                    Console.ReadLine();
-                    Console.Clear();
-                    RunCalculation();
+                    Console.WriteLine("Please enter a number between 1 and 4 ...");
+                    ValidateType();
                 }
             }
-            catch
+            return optionNumber;
+        }
 
+
+        public int Calculate()
+        {
+            int result;
+
+            if (optionNumber == 1)
             {
-                Console.WriteLine("Error, Please enter a number value");
-                Console.ReadLine();
-                Console.Clear();
-                RunCalculation();
+                result = AddResult();
+                return result;
+
             }
+            else if (optionNumber == 2)
+            {
+                result = SubtractResult();
+                return result;
+            }
+            else if (optionNumber == 3)
+            {
+                result = MultiplyResult();
+                return result;
+            }
+            else if (optionNumber == 4) ;
+            {
+                result = DivideResult();
+                return result;
+            }
+
 
         }
 
 
 
-
-        public void RunAddition()
+        public int AddResult()
         {
-            Console.Write("Please enter a number ... ");
+            answer = number1 + number2;
+            return answer;
 
-            enternumber3 = Console.ReadLine();
+        }
 
-            while (IsValid == true)
-            {
-                if (int.TryParse(enternumber3, out int number))
-                {
 
-                    Console.Write("Please enter a second number ... ");
+        public int SubtractResult()
+        {
+            answer = number1 - number2;
+            return answer;
 
-                    enternumber4 = Console.ReadLine();
-                    while (IsValid == true)
-                    {
-                        if (int.TryParse(enternumber4, out int number2))
-                        {
-                            answer1 = (number + number2);
-                            Console.WriteLine("The answer is " + answer1);
-                            Console.ReadLine();
-                            Console.Clear();
-                            RunCalculation();
-                        }
-                        else
-                        {
-                            Console.WriteLine("Not a valid entry \n Please enter a number ...");
-                            enternumber4 = Console.ReadLine();
+        }
 
-                        }
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Not a valid entry \n Please enter a number ...");
-                    enternumber3 = Console.ReadLine();
 
-                }
-            }
+        public int MultiplyResult()
+        {
+            answer = number1 * number2;
+            return answer;
+
+        }
+
+
+        public int DivideResult()
+        {
+            answer = number1 / number2;
+            return answer;
+
         }
 
 
 
-        public void RunSubtraction()
+        public void FirstNumberInput()
         {
-            
-            try
-            {
-                Console.Write("Please enter a number ... ");
-                enternumber1 = int.Parse(Console.ReadLine());
-            }
-            catch
-            {
-                Console.Write("This entry is not valid! Please Start again ...  \n");
-                RunSubtraction();
-            }
+            Console.WriteLine("Enter first number ...");
+            number1 = GetInput();
 
-            try
-            {
-                Console.Write("Please enter a second number ... ");
-                enternumber2 = int.Parse(Console.ReadLine());
-            }
-            catch
-            {
-                Console.Write("This entry is not valid! Please Start again ...  \n");
-                RunSubtraction();
-            }
+        }
 
-            answer = enternumber1 - enternumber2;
+
+        public void SecondNumberInput()
+        {
+            Console.WriteLine("Enter second number ...");
+            number2 = GetInput();
+
+        }
+
+
+        public void AnswerOutput()
+        {
+            answer = Calculate();
 
             Console.WriteLine("The answer is " + answer);
+            Console.Beep();
             Console.ReadLine();
-            Console.Clear();
-            RunCalculation();
 
         }
 
-
-
-        public void RunMultiply()
+        public void RestartApplication()
         {
-            Console.Write("Please enter a number ... ");
-
-            enternumber3 = Console.ReadLine();
-
-            while (IsValid == true)
+            string Restart;
+            
             {
-                if (int.TryParse(enternumber3, out int number))
+                Console.WriteLine("To restart calculator press 'y' OR press 'n' to exit");
+
+                Restart = Console.ReadLine().ToLower();
+
+                if (!Restart.Equals("y") && !Restart.Equals("n"))
                 {
-
-                    Console.Write("Please enter a second number ... ");
-
-                    enternumber4 = Console.ReadLine();
-                    while (IsValid == true)
-                    {
-                        if (int.TryParse(enternumber4, out int number2))
-                        {
-                            answer1 = (number * number2);
-                            Console.WriteLine("The answer is " + answer1);
-                            Console.ReadLine();
-                            Console.Clear();
-                            RunCalculation();
-                        }
-                        else
-                        {
-                            Console.WriteLine("Not a valid entry \n Please enter a number ...");
-                            enternumber4 = Console.ReadLine();
-
-                        }
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Not a valid entry \n Please enter a number ...");
-                    enternumber3 = Console.ReadLine();
+                    Console.WriteLine("Invalid!");
+                    RestartApplication();
 
                 }
+                else if (Restart.Equals("y"))
+                {
+                    Console.Clear();
+                    RunCalculator();
+                }
+                else Restart.Equals("n");
+                {
+                    Environment.Exit(0);
+                }
+
             }
-        }
 
-
-
-        public void RunDivide()
-        {
-            Console.Write("Please enter a number ... ");
-
-            enternumber3 = Console.ReadLine();
-
-            while (IsValid == true)
-            {
-                if (int.TryParse(enternumber3, out int number))
-                {
-
-                    Console.Write("Please enter a second number ... ");
-
-                    enternumber4 = Console.ReadLine();
-                    while (IsValid == true)
-                    {
-                        if (int.TryParse(enternumber4, out int number2))
-                        {
-                            answer1 = (number / number2);
-                            Console.WriteLine("The answer is " + answer1);
-                            Console.ReadLine();
-                            Console.Clear();
-                            RunCalculation();
-                        }
-                        else
-                        {
-                            Console.WriteLine("Not a valid entry \n Please enter a number ...");
-                            enternumber4 = Console.ReadLine();
-
-                        }
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Not a valid entry \n Please enter a number ...");
-                    enternumber3 = Console.ReadLine();
-
-                }
-            }
-        }
-
-
+        }    
     }
-
-
 }
+
+    
+
 
 
 
